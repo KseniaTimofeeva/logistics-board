@@ -26,8 +26,8 @@ public class OrderInfoWSBean implements Serializable{
 
     private static final String CHANNEL = ChannelWS.ORDER_INFO.getName();
     private final EventBus eventBus = EventBusFactory.getDefault().eventBus();
-    @Inject
-    private OrderInfoMBean orderInfoMBean;
+//    @Inject
+//    private OrderInfoMBean orderInfoMBean;
 
     public void send(MessageDto message) {
 //        orderInfoMBean.changeData(message);

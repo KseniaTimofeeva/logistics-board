@@ -14,13 +14,13 @@
 
     <f:view>
         <h:form>
-            <p:remoteCommand name="updateGeneralInfo" process="general-info" update="general-info"/>
+            <p:remoteCommand name="updateGeneralInfo" process="@parent:@parent:main:main-general:general-info" update="@parent:@parent:main:main-general:general-info"/>
         </h:form>
         <h:form>
-            <p:remoteCommand name="updateDriverInfo" process="driver-info" update="driver-info"/>
+            <p:remoteCommand name="updateDriverInfo" process="@parent:@parent:main:main-general:driver-info" update="@parent:@parent:main:main-general:driver-info"/>
         </h:form>
         <h:form>
-            <p:remoteCommand name="updateTruckInfo" process="truck-info" update="truck-info"/>
+            <p:remoteCommand name="updateTruckInfo" process="@parent:@parent:main:main-general:truck-info" update="@parent:@parent:main:main-general:truck-info"/>
         </h:form>
         <!--<h:form>
             <p:remoteCommand name="updateOrderInfo" process="order-info" update="order-info"/>
@@ -34,92 +34,101 @@
 
         <!--<p:socket onMessage="updateOrderInfo()" channel="/orderInfo"/>-->
 
-        <p:dataTable id="general-info" var="info" value="#{generalInfoMBean.generalInfo}">
-            <f:facet name="header">General information</f:facet>
-            <p:column>
-                <p:panelGrid>
-                    <p:row>
-                        <p:column>Drivers number</p:column>
-                        <p:column id="drivers-number"><h:outputText value="#{info.driverQty}"/></p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>Vacant drivers number</p:column>
-                        <p:column id="vacant-drivers"><h:outputText value="#{info.vacantDriverQty}"/></p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>Not available drivers number</p:column>
-                        <p:column id="not-av-drivers"><h:outputText value="#{info.notAvailableDriverQty}"/></p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>Trucks number</p:column>
-                        <p:column id="trucks-number"><h:outputText value="#{info.truckQty}"/></p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>Vacant trucks number</p:column>
-                        <p:column id="vacant-trucks"><h:outputText value="#{info.vacantTruckQty}"/></p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>On order trucks number</p:column>
-                        <p:column id="on-order-trucks"><h:outputText value="#{info.onOrderTruckQty}"/></p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>Not working trucks number</p:column>
-                        <p:column id="not-working-trucks"><h:outputText value="#{info.notWorkingTruckQty}"/></p:column>
-                    </p:row>
-                </p:panelGrid>
-            </p:column>
-        </p:dataTable>
+        <p:accordionPanel multiple="true" id="main">
+            <p:tab title="General information" id="main-general">
+                <p:dataTable id="general-info" var="info" value="#{generalInfoMBean.generalInfo}">
+                    <p:column>
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column>Drivers number</p:column>
+                                <p:column id="drivers-number"><h:outputText value="#{info.driverQty}"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>Vacant drivers number</p:column>
+                                <p:column id="vacant-drivers"><h:outputText value="#{info.vacantDriverQty}"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>Not available drivers number</p:column>
+                                <p:column id="not-av-drivers"><h:outputText value="#{info.notAvailableDriverQty}"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>Trucks number</p:column>
+                                <p:column id="trucks-number"><h:outputText value="#{info.truckQty}"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>Vacant trucks number</p:column>
+                                <p:column id="vacant-trucks"><h:outputText value="#{info.vacantTruckQty}"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>On order trucks number</p:column>
+                                <p:column id="on-order-trucks"><h:outputText value="#{info.onOrderTruckQty}"/></p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>Not working trucks number</p:column>
+                                <p:column id="not-working-trucks"><h:outputText value="#{info.notWorkingTruckQty}"/></p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
 
-        <p:dataTable emptyMessage="" id="driver-info" var="driver" value="#{driverInfoMBean.allDriversInfo}">
-            <f:facet name="header">Drivers information</f:facet>
-            <p:column headerText="Personal number" id="driver-personal-number-#{driver.id}">
-                <h:outputText value="#{driver.personalNumber}"/>
-            </p:column>
-            <p:column headerText="First name" id="driver-firstname-#{driver.id}">
-                <h:outputText value="#{driver.firstName}"/>
-            </p:column>
-            <p:column headerText="Last name" id="driver-lastname-#{driver.id}">
-                <h:outputText value="#{driver.lastName}"/>
-            </p:column>
-            <p:column headerText="Current city" id="driver-current-city-#{driver.id}">
-                <h:outputText value="#{driver.currentCity.name}"/>
-            </p:column>
-            <p:column headerText="Already worked hours" id="driver-already-worked-hours-#{driver.id}">
-                <h:outputText value="#{driver.alreadyWorkedHrs}"/>
-            </p:column>
-            <p:column headerText="Remain hours" id="driver-remain-hours-#{driver.id}">
-                <h:outputText value="#{driver.remainHrs}"/>
-            </p:column>
-            <p:column headerText="Status" id="driver-status-#{driver.id}">
-                <h:outputText value="On order" rendered="#{driver.onOrder}"/>
-                <h:outputText value="Vacant" rendered="#{!driver.onOrder}"/>
-            </p:column>
-        </p:dataTable>
+            <p:tab title="Drivers information" id="main-drivers">
+                <p:dataTable emptyMessage="" id="driver-info" var="driver" value="#{driverInfoMBean.allDriversInfo}" rows="5" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <p:column headerText="Personal number" id="driver-personal-number-#{driver.id}">
+                        <h:outputText value="#{driver.personalNumber}"/>
+                    </p:column>
+                    <p:column headerText="First name" id="driver-firstname-#{driver.id}">
+                        <h:outputText value="#{driver.firstName}"/>
+                    </p:column>
+                    <p:column headerText="Last name" id="driver-lastname-#{driver.id}">
+                        <h:outputText value="#{driver.lastName}"/>
+                    </p:column>
+                    <p:column headerText="Current city" id="driver-current-city-#{driver.id}">
+                        <h:outputText value="#{driver.currentCity.name}"/>
+                    </p:column>
+                    <p:column headerText="Already worked hours" id="driver-already-worked-hours-#{driver.id}">
+                        <h:outputText value="#{driver.alreadyWorkedHrs}"/>
+                    </p:column>
+                    <p:column headerText="Remain hours" id="driver-remain-hours-#{driver.id}">
+                        <h:outputText value="#{driver.remainHrs}"/>
+                    </p:column>
+                    <p:column headerText="Status" id="driver-status-#{driver.id}">
+                        <h:outputText value="On order" rendered="#{driver.onOrder}"/>
+                        <h:outputText value="Vacant" rendered="#{!driver.onOrder}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
 
-        <p:dataTable emptyMessage="" id="truck-info" var="truck" value="#{truckInfoMBean.allTrucksInfo}">
-            <f:facet name="header">Trucks information</f:facet>
-            <p:column headerText="Number plate" id="truck-number-plate-#{truck.id}">
-                <h:outputText value="#{truck.numberPlate}"/>
-            </p:column>
-            <p:column headerText="Current city" id="truck-current-city-#{truck.id}">
-                <h:outputText value="#{truck.currentCity.name}"/>
-            </p:column>
-            <p:column headerText="Crew">
-                <p:dataList type="ordered" styleClass="datalist-noborder" id="truck-crew-#{truck.id}"
-                            rendered="#{!truck.crew.users.isEmpty() and truck.crew.users != null}" emptyMessage=""
-                            value="#{truck.crew.users}" var="user">
-                    #{user.personalNumber} - #{user.firstName} #{user.lastName}
-                </p:dataList>
-            </p:column>
-            <p:column headerText="Functioning" id="truck-functioning-#{truck.id}">
-                <h:outputText value="Yes" rendered="#{truck.functioning}"/>
-                <h:outputText value="No" rendered="#{!truck.functioning}"/>
-            </p:column>
-            <p:column headerText="Status" id="truck-status-#{truck.id}">
-                <h:outputText value="On order" rendered="#{truck.onOrder}"/>
-                <h:outputText value="Vacant" rendered="#{!truck.onOrder}"/>
-            </p:column>
-        </p:dataTable>
+            <p:tab title="Trucks information" id="main-trucks">
+                <p:dataTable emptyMessage="" id="truck-info" var="truck" value="#{truckInfoMBean.allTrucksInfo}" rows="5" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <p:column headerText="Number plate" id="truck-number-plate-#{truck.id}">
+                        <h:outputText value="#{truck.numberPlate}"/>
+                    </p:column>
+                    <p:column headerText="Current city" id="truck-current-city-#{truck.id}">
+                        <h:outputText value="#{truck.currentCity.name}"/>
+                    </p:column>
+                    <p:column headerText="Crew">
+                        <p:dataList type="ordered" styleClass="datalist-noborder" id="truck-crew-#{truck.id}"
+                                    rendered="#{!truck.crew.users.isEmpty() and truck.crew.users != null}" emptyMessage=""
+                                    value="#{truck.crew.users}" var="user">
+                            #{user.personalNumber} - #{user.firstName} #{user.lastName}
+                        </p:dataList>
+                    </p:column>
+                    <p:column headerText="Functioning" id="truck-functioning-#{truck.id}">
+                        <h:outputText value="Yes" rendered="#{truck.functioning}"/>
+                        <h:outputText value="No" rendered="#{!truck.functioning}"/>
+                    </p:column>
+                    <p:column headerText="Status" id="truck-status-#{truck.id}">
+                        <h:outputText value="On order" rendered="#{truck.onOrder}"/>
+                        <h:outputText value="Vacant" rendered="#{!truck.onOrder}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+        </p:accordionPanel>
     </f:view>
 </h:body>
 
