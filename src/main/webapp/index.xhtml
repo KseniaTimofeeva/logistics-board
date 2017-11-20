@@ -14,17 +14,19 @@
 
     <f:view>
         <h:form>
-            <p:remoteCommand name="updateGeneralInfo" process="@parent:@parent:main:main-general:general-info" update="@parent:@parent:main:main-general:general-info"/>
+            <p:remoteCommand name="updateGeneralInfo" process="@parent:@parent:main:main-general:general-info"
+                             update="@parent:@parent:main:main-general:general-info"/>
         </h:form>
         <h:form>
-            <p:remoteCommand name="updateDriverInfo" process="@parent:@parent:main:main-general:driver-info" update="@parent:@parent:main:main-general:driver-info"/>
+            <p:remoteCommand name="updateDriverInfo" process="@parent:@parent:main:main-drivers:driver-info"
+                             update="@parent:@parent:main:main-drivers:driver-info"/>
         </h:form>
         <h:form>
-            <p:remoteCommand name="updateTruckInfo" process="@parent:@parent:main:main-general:truck-info" update="@parent:@parent:main:main-general:truck-info"/>
+            <p:remoteCommand name="updateTruckInfo" process="@parent:@parent:main:main-trucks:truck-info" update="@parent:@parent:main:main-trucks:truck-info"/>
         </h:form>
-        <!--<h:form>
-            <p:remoteCommand name="updateOrderInfo" process="order-info" update="order-info"/>
-        </h:form>-->
+        <h:form>
+            <p:remoteCommand name="updateOrderInfo" process="@parent:@parent:main:main-orders:order-info" update="@parent:@parent:main:main-orders:order-info"/>
+        </h:form>
 
         <p:socket onMessage="generalInfoListener" channel="/generalInfo"/>
 
@@ -32,7 +34,7 @@
 
         <p:socket onMessage="truckInfoListener" channel="/truckInfo"/>
 
-        <!--<p:socket onMessage="updateOrderInfo()" channel="/orderInfo"/>-->
+        <p:socket onMessage="orderInfoListener" channel="/orderInfo"/>
 
         <p:accordionPanel multiple="true" id="main">
             <p:tab title="General information" id="main-general">
@@ -125,6 +127,35 @@
                     <p:column headerText="Status" id="truck-status-#{truck.id}">
                         <h:outputText value="On order" rendered="#{truck.onOrder}"/>
                         <h:outputText value="Vacant" rendered="#{!truck.onOrder}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+
+            <p:tab title="Orders information" id="main-orders">
+                <p:dataTable emptyMessage="" id="order-info" var="order" value="#{orderInfoMBean.ordersInfo}" rows="5" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <p:column headerText="Number">
+                        <h:outputText value="#{order.number}"/>
+                    </p:column>
+                    <p:column headerText="Starting city">
+                        <h:outputText value="#{order.start}"/>
+                    </p:column>
+                    <p:column headerText="Final city">
+                        <h:outputText value="#{order.finish}"/>
+                    </p:column>
+                    <p:column headerText="Truck number">
+                        <h:outputText value="#{order.crew.truckNumberPlate}"/>
+                    </p:column>
+                    <p:column headerText="Crew">
+                        <p:dataList type="ordered" styleClass="datalist-noborder"
+                                    rendered="#{!order.crew.users.isEmpty() and order.crew.users != null}" emptyMessage=""
+                                    value="#{order.crew.users}" var="user">
+                            #{user.personalNumber} - #{user.firstName} #{user.lastName}
+                        </p:dataList>
+                    </p:column>
+                    <p:column headerText="Status">
+                        <h:outputText value="#{order.status.viewName}"/>
                     </p:column>
                 </p:dataTable>
             </p:tab>

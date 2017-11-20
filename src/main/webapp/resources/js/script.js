@@ -1,6 +1,5 @@
 function generalInfoListener(message) {
     console.log(message);
-    console.log(message);
     updateGeneralInfo();
 }
 
