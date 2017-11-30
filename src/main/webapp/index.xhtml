@@ -93,10 +93,10 @@
                         <h:outputText value="#{driver.currentCity.name}"/>
                     </p:column>
                     <p:column headerText="Already worked hours" id="driver-already-worked-hours-#{driver.id}">
-                        <h:outputText value="#{driver.alreadyWorkedHrs}"/>
+                        <h:outputText value="#{driver.alreadyWorkedHrs}"><f:convertNumber pattern="#0.00" /></h:outputText>
                     </p:column>
                     <p:column headerText="Remain hours" id="driver-remain-hours-#{driver.id}">
-                        <h:outputText value="#{driver.remainHrs}"/>
+                        <h:outputText value="#{driver.remainHrs}"><f:convertNumber pattern="#0.00" /></h:outputText>
                     </p:column>
                     <p:column headerText="Status" id="driver-status-#{driver.id}">
                         <h:outputText value="On order" rendered="#{driver.onOrder}"/>
